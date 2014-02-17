@@ -1,2 +1,4 @@
+.DS_Store
+
 # We don't want to accidentally upload our credentials.
 database.php
