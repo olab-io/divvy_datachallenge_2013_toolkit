@@ -219,6 +219,7 @@
     $query .= " LIMIT " . mysql_real_escape_string($rpp * $page) . ", " . mysql_real_escape_string($rpp) . " ";
 
     // take a look at the query to see what's up.    
+    // echo $query;
 
     // We use an include here as an easy way to share the source of this file 
     // on github without sharing our database credentials. In most cases, with 
