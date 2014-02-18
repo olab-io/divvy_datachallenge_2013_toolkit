@@ -215,10 +215,10 @@
         $query .= ' WHERE ' . implode(' AND ', $conditions);
     }
 
-    $query .= " LIMIT " . $page . "," . $rpp;
+    // TODO: get rid of mysql_real_escape_string and use the prepared statement correctly
+    $query .= " LIMIT " . mysql_real_escape_string($rpp * $page) . ", " . mysql_real_escape_string($rpp) . " ";
 
     // take a look at the query to see what's up.    
-    // echo $query;
 
     // We use an include here as an easy way to share the source of this file 
     // on github without sharing our database credentials. In most cases, with 
@@ -246,6 +246,8 @@
 
     $statement = $dbh->prepare($query);
     $statement->execute($conditions_params);
+
+    $statement->debugDumpParams();
 
     $results = $statement->fetchAll(PDO::FETCH_ASSOC);
     $json = json_encode($results);
