@@ -3,7 +3,6 @@ import java.text.SimpleDateFormat;
 import java.text.ParseException;
 import java.util.Date;
 import java.util.TimeZone;
-import java.util.Calendar;
 
 // Station name to ID map.
 Map<String, String> stationIdMap = new HashMap<String, String>();
@@ -29,7 +28,7 @@ try
 
   // Create a write to write our processed data to a new CSV file.
   // dataPath() places the file inside the data folder.
-  output = createWriter(dataPath("Divvy_Stations_Trips_2013/Divvy_Trips_2013_Cleaned.csv")); 
+  output = createWriter(dataPath("Divvy_Stations_Trips_2013/Divvy_Trips_2013_Preprocessed.csv")); 
 
   // Consume the header line so it isn't processed as if it's data.
   String header = reader.readLine(); 
@@ -43,13 +42,13 @@ try
   cleanedLine += ",";
   cleanedLine += "start_time";
   cleanedLine += ",";
-  cleanedLine += "end_time";
+  cleanedLine += "stop_time";
   cleanedLine += ",";
   cleanedLine += "bike_id";
   cleanedLine += ","; 
-  cleanedLine += "start_station_id";
+  cleanedLine += "from_station_id";
   cleanedLine += ","; 
-  cleanedLine += "end_station_id";
+  cleanedLine += "to_station_id";
   cleanedLine += ","; 
   cleanedLine += "user_type";
   cleanedLine += ","; 
@@ -98,7 +97,7 @@ try
     // Format the start time for MySQL DateTime and UTC time zone.
     String formattedStartTime = outDateTimeFormat.format(tripStartTime);
     // Format the end time for MySQL DateTime and UTC time zone.
-    String formattedEndTime = outDateTimeFormat.format(tripEndTime);
+    String formattedStopTime = outDateTimeFormat.format(tripEndTime);
 
     // Currently the station list does not contain matching station ids.
     // Here we will create a map for later use when we clean the station list CSV.
@@ -143,7 +142,7 @@ try
     cleanedLine += ",";
     cleanedLine += formattedStartTime; // The start time in MySQL DateTime format and in UTC timezone.
     cleanedLine += ",";
-    cleanedLine += formattedEndTime; // The end time in MySQL DateTime format and in UTC timezone..
+    cleanedLine += formattedStopTime; // The end time in MySQL DateTime format and in UTC timezone..
     cleanedLine += ",";
     cleanedLine += columns[3]; // The raw bike id.
     cleanedLine += ","; 
@@ -193,7 +192,7 @@ try
 
   // Create a write to write our processed data to a new CSV file.
   // dataPath() places the file inside the data folder.
-  output = createWriter(dataPath("Divvy_Stations_Trips_2013/Divvy_Stations_2013_Cleaned.csv")); 
+  output = createWriter(dataPath("Divvy_Stations_Trips_2013/Divvy_Stations_2013_Preprocessed.csv")); 
 
   // Consume the header line so it isn't processed as if it's data.
   String header = reader.readLine(); 
