@@ -247,8 +247,6 @@
     $statement = $dbh->prepare($query);
     $statement->execute($conditions_params);
 
-    $statement->debugDumpParams();
-
     $results = $statement->fetchAll(PDO::FETCH_ASSOC);
     $json = json_encode($results);
 
