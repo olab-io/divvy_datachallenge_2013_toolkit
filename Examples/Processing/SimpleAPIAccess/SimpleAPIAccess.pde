@@ -22,13 +22,61 @@
 //
 // =============================================================================
 
-JSONArray json;
+import java.util.Map;
+import de.fhpotsdam.unfolding.*;
+import de.fhpotsdam.unfolding.geo.*;
+import de.fhpotsdam.unfolding.utils.*;
+
+// Station name to ID map.
+HashMap<Integer, Station> stationMap = new HashMap<Integer, Station>();
+
+// Our map
+UnfoldingMap map;
+
+// Home location
+Location chicagoLocation = new Location(41.883, -87.632);
 
 void setup() {
+  size(600, 800, P2D);
+  frameRate(60);
 
-  json = loadJSONArray("http://data.olab.io/divvy/api.php");
+  map = new UnfoldingMap(this);
+  map.zoomAndPanTo(chicagoLocation, 12);
+  MapUtils.createDefaultEventDispatcher(this, map);
 
-  println(json);
+  loadStations();
 }
 
+void draw()
+{
+  background(0);
+  map.draw();
+}
+
+void loadStations()
+{
+
+  JSONArray stationsJSON = loadJSONArray("http://data.olab.io/divvy/stations.json");
+//  JSONArray stationsJSON = loadJSONArray("stations.json");
+
+  println(stationsJSON);
+
+  for (int i = 0; i < stationsJSON.size(); i++) {
+
+    JSONObject stationJSON = stationsJSON.getJSONObject(i);
+
+    int id = stationJSON.getInt("id");
+    String name = stationJSON.getString("name");
+    float latitude = stationJSON.getFloat("latitude");
+    float longitude = stationJSON.getFloat("longitude");
+    int capacity = stationJSON.getInt("capacity");
+
+    Station station = new Station(id, name, latitude, longitude, capacity);
+
+    stationMap.put(id, station);
+    StationMarker stationMarker = new StationMarker(station);
+
+    map.addMarker(stationMarker);
+  }
+}
 
