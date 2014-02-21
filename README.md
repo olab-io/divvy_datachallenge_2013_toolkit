@@ -1,5 +1,8 @@
 # Divvy Data Challenge 2013 Toolkit
 
+## Update (21 Feb, 2014 @ 2:59 PM)
+Divvy Just updated and cleaned up the data a bit.  This toolkit will be updated shortly to use the cleaned data.  More soon. 
+
 Developed by [Christopher Baker](http://github.com/bakercp) in collaboration with the [openLab](http://olab.io) at the [School of the Art Institute of Chicago](http://saic.edu).
 
 This toolkit consists of a collection of examples, preprocessors and tools to support work on the [http://divvybikes.com/datachallenge](http://divvybikes.com/datachallenge) data set.
