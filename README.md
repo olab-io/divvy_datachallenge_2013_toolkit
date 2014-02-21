@@ -4,6 +4,10 @@ Developed by [Christopher Baker](http://github.com/bakercp) in collaboration wit
 
 This toolkit consists of a collection of examples, preprocessors and tools to support work on the [http://divvybikes.com/datachallenge](http://divvybikes.com/datachallenge) data set.
 
+### Related 
+
+ - https://github.com/tothebeat/pairwise-geo-distances/tree/master/bike_stations_data/Chicago
+
 ## Components
 
 ### DataPreprocessor
