@@ -1,0 +1,7 @@
+# Data Preprocessor
+
+The `DataPreprocessor` is a processing sketch that makes it easy to pre-process the raw Divvy data.  The existing version removes several redundant columns (database normalization) and shortens enumeration variables (e.g. `Female` to `F`, etc) to save byte.  Additionally, times and dates are converted to UTC. With 750K rows, these things add up.  Please see the extensive comments in the [Processing sketch](https://github.com/olab-io/divvy_datachallenge_2013_toolkit/blob/master/DataPreprocessor/DataPreprocessor.pde) for more information.
+
+To use the `DataPreprocesor`, place the latest raw data (available [here](https://github.com/olab-io/divvy_datachallenge_2013_toolkit/tree/master/data)) in the `data` folder of the Processing sketch.  Then open the sketch in the latest version of [Processing](http://processing.org) and press the `Run` button.  The sketch will yield several "preprocessed" files for use in other Processing sketches, including the examples in this toolkit.  The current version can also be easily imported into a MySQL database for online access via the [DIY API](https://github.com/olab-io/divvy_datachallenge_2013_toolkit/blob/master/api/README.md) backend. 
+
+Users are encouraged to hack the `DataPreprocessor` to create their own custom tables.  For instance, the user might want to include route information, bearing information, or create a table that includes 3rd party data.
