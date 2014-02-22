@@ -1,21 +1,27 @@
 # Divvy Data Challenge 2013 Toolkit
 
-## Update (21 Feb, 2014 @ 2:59 PM)
-Divvy Just updated and cleaned up the data a bit.  This toolkit will be updated shortly to use the cleaned data.  More soon. 
+## Updates
+ - 22 Feb, 2014: Updated everything for revised Divvy Data. 
+ - 07 Feb, 2014: Initial Upload
+
+## Info
 
 Developed by [Christopher Baker](http://github.com/bakercp) in collaboration with the [openLab](http://olab.io) at the [School of the Art Institute of Chicago](http://saic.edu).
 
 This toolkit consists of a collection of examples, preprocessors and tools to support work on the [http://divvybikes.com/datachallenge](http://divvybikes.com/datachallenge) data set.
 
-### Related 
+### Related Data and Documents 
 
- - https://github.com/tothebeat/pairwise-geo-distances/tree/master/bike_stations_data/Chicago
+ - [Divvy Data Document](http://j.mp/DivvyData)
+     - Explains the fields, etc.
+ - [Divvy Station Distance Tables](https://github.com/tothebeat/pairwise-geo-distances/tree/master/bike_stations_data/Chicago)
+     - Supplementary distance data.
 
 ## Components
 
 ### DataPreprocessor
 
-The `DataPreprocessor` is a processing sketch that makes it easy to pre-process the raw Divvy data.  The existing version removes several columns, shortens enumeration names and fixes several data anomalies found in the original raw data set.  Please see the extensive comments in the [Processing sketch](https://github.com/olab-io/divvy_datachallenge_2013_toolkit/blob/master/DataPreprocessor/DataPreprocessor.pde).  Additionally, the stations data will be keyed to the station ids in the trips file (which will result in better MySQL table normalization). 
+The `DataPreprocessor` is a processing sketch that makes it easy to pre-process the raw Divvy data.  The existing version removes several columns and shortens enumeration names.  Please see the extensive comments in the [Processing sketch](https://github.com/olab-io/divvy_datachallenge_2013_toolkit/blob/master/DataPreprocessor/DataPreprocessor.pde).
 
 To use the `DataPreprocesor`, place the raw data (available [here](http://divvybikes.com/assets/images/Divvy_Stations_Trips_2013.zip)) in the `data` folder of the Processing sketch.
 
@@ -27,7 +33,7 @@ While working with huge CSV files is quite possible, for online visualization an
 
 To set up your own Divvy data API, you will need a web server with PHP and MySQL.  Most modern servers, including shared hosting, offer this capability.  To set up the data API follow these steps:
 
-1. Generate the `Divvy_Stations_2013_Cleaned.csv` and `Divvy_Trips_2013_Cleaned.csv` (~50MB) files using the `DataPreprocessor`.  
+1. Generate the `Divvy_Stations_2013_Preprocessed.csv` and `Divvy_Trips_2013_Preprocessed.csv` (~50MB) files using the `DataPreprocessor`.  
 2. On your server, create a MySQL database called `divvy_2013` and a MySQL user called `divvy`.  The `divvy` user should have read access to the `divvy_2013` database (if this doesn't make sense, that's ok, there is an easier alternative below).
 3. Next create a table called `Divvy_Stations_2013` in the `divvy_2013` database with using the following structure:
 
@@ -37,9 +43,12 @@ To set up your own Divvy data API, you will need a web server with PHP and MySQL
           `latitude` float DEFAULT NULL,
           `longitude` float DEFAULT NULL,
           `capacity` int(11) DEFAULT NULL,
+          `landmark_id` int(11) DEFAULT NULL,
+          `online_date` datetime NOT NULL,
           PRIMARY KEY (`id`)
         ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-Import the `Divvy_Stations_2013_Cleaned.csv` file into this table.
+        
+Import the `Divvy_Stations_2013_Preprocessed.csv` file into this table.
 
 4. Next create a tabled called `Divvy_Trips_2013` in the `divvy_2013` database with the following structure:
 
@@ -60,12 +69,13 @@ Import the `Divvy_Stations_2013_Cleaned.csv` file into this table.
           KEY `stop_time` (`stop_time`),
           KEY `start_time` (`start_time`),
           KEY `birth_year` (`birth_year`)
-        ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-Import the `Divvy_Trips_2013_Cleaned.csv` file into this table.  _Note: The `Divvy_Trips_2013_Cleaned.csv` is quite large and it may not be possible to import the file via a simple interface like phpMyAdmin.  Instead, consider uploading the CSV file to your server, logging in via SSH and running the following command:
+        ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+        
+Import the `Divvy_Trips_2013_Preprocessed.csv` file into this table.  _Note: The `Divvy_Trips_2013_Preprocessed.csv` is quite large and it may not be possible to import the file via a simple interface like phpMyAdmin.  Instead, consider uploading the CSV file to your server, logging in via SSH, changing the name of `Divvy_Trips_2013_Preprocessed.csv` to `Divvy_Trips_2013.csv` and running the following command:
 
         mysqlimport  --ignore-lines=1 \
         --fields-terminated-by=, \
-        --columns='trip_id,starttime,stoptime,bikeid,tripduration,from_station_id,from_station_name,to_station_id,to_station_name,usertype,gender,birthyear' \
+        --columns='trip_id,start_time,stop_time,bike_id,from_station_id,to_station_id,user_type,gender,birth_year' \
         --local -u root -p divvy_2013 Divvy_Trips_2013.csv
         
 5.  Next, upload [api.php](https://github.com/olab-io/divvy_datachallenge_2013_toolkit/blob/master/api/api.php) and [credentials_example.php](https://github.com/olab-io/divvy_datachallenge_2013_toolkit/blob/master/api/credentials_example.php) to the location of your choice on your server.
@@ -98,6 +108,7 @@ The API is currently a single endpoint with a simple set of parameters.
  `age_max`[^2]       | _Set the maximum age_            |_Any age >= 0_     
  `page`[^3]          | _The results page_               |_Any page >= 0_     
  `rpp`[^3]           | _Set the maximum age_            |_0 <= rpp <= 100_     
+ `stations`          | _Include station data_           |_1 for station data_     
  `callback`          | _A JSONP callback_               |_Any valid javascript method name._
 
 ### Trip Api Examples
@@ -105,6 +116,8 @@ The API is currently a single endpoint with a simple set of parameters.
 For convenience the [openLab](http://olab.io) has established a public endpoint for testing.  The base endpoint URL is:
 
 <http://data.olab.io/divvy/api.php>
+
+_While we will do our best to support public projects, this endpoint may be rate limited without notice if the need arises and users are encouraged to follow the instructions above to establish their own endpoints._
 
 All query parameter strings build from that endpoint.  If you install your own API, your endpoint URL will be different.
 
@@ -125,7 +138,6 @@ To get all trips taken by 33 year old females:
 Static stations are represented in the `stations.json` data.  The `stations.json` data can be generated by the `stations.php` script.  The stations endpoint takes no parameters.
 
   - <http://data.olab.io/divvy/stations.json>
-
 
 #### Footnotes
 [^1]: If a `trip_id` parameter is passed along with a `trip_id_min` and / or `trip_id_max` parameter, the `trip_id` parameter is ignored and the range style parameters are preferred.
