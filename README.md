@@ -42,13 +42,15 @@ See the [README.md](https://github.com/olab-io/divvy_datachallenge_2013_toolkit/
 
 ### Examples
     
-_Descriptions coming soon._
+_Descriptions coming soon.  See code comments for the moment._
 
-## Additional Data, Supplementary Information and Related Projects
+## Related
 
  - [Divvy Data Document](http://j.mp/DivvyData)
      - Explains the fields, etc.
  - [Divvy Station Distance Tables](https://github.com/tothebeat/pairwise-geo-distances/tree/master/bike_stations_data/Chicago)
      - Supplementary distance data.
  - <http://chicagocrashes.org/>
+     - A map that examines pedestrian / cyclist vs. auto crashes in chicago.
  - <https://bikesharingdata.hackpad.com/>
+     - A lot of bike-data resources collected by @stevevance.
