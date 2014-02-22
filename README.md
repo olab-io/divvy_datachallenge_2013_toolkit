@@ -108,7 +108,6 @@ The API is currently a single endpoint with a simple set of parameters.
  `age_max`[^2]       | _Set the maximum age_            |_Any age >= 0_     
  `page`[^3]          | _The results page_               |_Any page >= 0_     
  `rpp`[^3]           | _Set the maximum age_            |_0 <= rpp <= 100_     
- `stations`          | _Include station data_           |_1 for station data_     
  `callback`          | _A JSONP callback_               |_Any valid javascript method name._
 
 ### Trip Api Examples
