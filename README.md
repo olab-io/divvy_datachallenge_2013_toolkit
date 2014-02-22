@@ -24,7 +24,7 @@ The `DataPreprocessor` is a Processing sketch that makes it easy to pre-process 
 
 ### DIY API (Do-It-Yourself-Application-Programming-Interface)
 
-The DIY API is a way to let your visualization project search the Divvy bike data using simple search parameters
+The DIY API is a way to let your visualization project search the Divvy bike data using simple search parameters.  Here are a few examples:
 
 Select the first page of 25 results for for trips between 2013-06-01 and 2013-07-01 for males over the age of 50: 
   
@@ -38,7 +38,7 @@ To get all trips taken by 33 year old females:
   
   - <http://data.olab.io/divvy/api.php?gender=female&age=33>
 
-See the [README.md](https://github.com/olab-io/divvy_datachallenge_2013_toolkit/blob/master/api/README.md) for installation instructions and additional query parameters.
+See the [README.md](https://github.com/olab-io/divvy_datachallenge_2013_toolkit/blob/master/api/README.md) for DIY API installation instructions and query parameter documentation.
 
 ### Examples
     
