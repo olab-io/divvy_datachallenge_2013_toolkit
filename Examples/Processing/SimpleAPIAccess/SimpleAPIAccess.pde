@@ -23,6 +23,7 @@
 // =============================================================================
 
 import java.util.Map;
+import java.util.Date;
 import de.fhpotsdam.unfolding.*;
 import de.fhpotsdam.unfolding.geo.*;
 import de.fhpotsdam.unfolding.utils.*;
@@ -71,7 +72,8 @@ void loadStations()
     float longitude = stationJSON.getFloat("longitude");
     int capacity = stationJSON.getInt("capacity");
 
-    Station station = new Station(id, name, latitude, longitude, capacity);
+    // TODO: upate for new data format
+    Station station = new Station(id, name, latitude, longitude, capacity, -1, new Date());
 
     stationMap.put(id, station);
     StationMarker stationMarker = new StationMarker(station);

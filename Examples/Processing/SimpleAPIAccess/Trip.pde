@@ -1,10 +1,3 @@
-import java.util.HashMap;
-import java.text.SimpleDateFormat;
-import java.text.ParseException;
-import java.util.Date;
-import java.util.TimeZone;
-import processing.core.*;
-
 /// This class represents a Divvy Bike Trip taken by a single user.
 class Trip
 {
@@ -120,76 +113,8 @@ class Trip
   }
 
   // returns a clamped 0 - 1 for a trip
-  float getProgressAtTime(Date time)
+  float getProgressAtTime(long time)
   {
-    return PApplet.constrain(PApplet.norm(time.getTime(), _startTime.getTime(), _stopTime.getTime()), 0, 1);
-  }
-
-  private static SimpleDateFormat outDateTimeFormat = null;
-
-  private static Date parseDate(String date)
-  {
-    if (outDateTimeFormat == null)
-    {
-      outDateTimeFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-      outDateTimeFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
-    }
-
-    try 
-    {
-      return outDateTimeFormat.parse(date);
-    }
-    catch (ParseException e) 
-    {
-      e.printStackTrace();
-      return null;
-    }
-  }
-
-  private static String formatDate(Date date)
-  {
-    if (outDateTimeFormat == null)
-    {
-      outDateTimeFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-      outDateTimeFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
-    }
-
-    return outDateTimeFormat.format(date);
-  }
-
-  public static String getCSVHeader()
-  {
-    return "trip_id,start_time,stop_time,bike_id,from_station_id,to_station_id,user_type,gender,birth_year";
-  }
-
-  public static Trip fromCSV(String csv, HashMap<Integer, Station> stationsMap)
-  {
-    // Create an array of Strings split
-    String[] columns = PApplet.split(csv, ",");
-
-    int id = Integer.parseInt(columns[0]);
-    Date startTime = parseDate(columns[1]);
-    Date stopTime = parseDate(columns[2]);
-    int bikeId = Integer.parseInt(columns[3]);
-    int fromStationId = Integer.parseInt(columns[4]);
-    int toStationId = Integer.parseInt(columns[5]);
-    String userType = columns[6];
-    String gender = columns[7];
-    int birthYear = ((columns[8].isEmpty()) ? 0 : Integer.parseInt(columns[8]));
-
-    return new Trip(id, startTime, stopTime, bikeId, stationsMap.get(fromStationId), stationsMap.get(toStationId), userType, gender, birthYear);
-  }
-
-  public String toCSV()
-  {
-    return _id + "," + 
-      formatDate(_startTime) + "," + 
-      formatDate(_stopTime) + "," + 
-      _bikeId + "," + 
-      _fromStation.getId() + "," + 
-      _toStation.getId() + "," + 
-      _userType + "," +
-      _gender + "," + ((_birthYear == 0) ? "" : _birthYear);
+    return constrain(norm(time, _startTime.getTime(), _stopTime.getTime()), 0, 1);
   }
 }
-
