@@ -1,6 +1,6 @@
-class TripPlayer
+class DataPlayer
 {
-  float _speed = 10000; // The speed of the player.  A speed of 1 will play the trips in "real time".
+  float _speed = 10; // The speed of the player.  A speed of 1 will play the trips in "real time".
   boolean _isInited = false;
 
   boolean _isPlaying = true; // Are we currently playing.
@@ -11,13 +11,16 @@ class TripPlayer
 
   ArrayList<Trip> _newTrips = new ArrayList<Trip>();
 
-  public TripPlayer()
+  public DataPlayer()
   {
   }
 
   // This is where we do the math to figure out what trips come next.
   public void update()
   {
+    // Clear out the trips.
+    _newTrips.clear();
+    
     // Do we have any trips?  If not, skip this.
     // If we have trips, are we currently playing?  If not, skip this.
     if (!_isPlaying) return;
@@ -29,8 +32,8 @@ class TripPlayer
     long elapsedTimeReal = now - _lastUpdate; 
 
     // How much time has passed in our simulation?
-    // In this case, speed could be negative to go backwards.
-    long elapsedTimeSimulated = (long)(elapsedTimeReal * _speed);
+    // Multiply by 1000 because it is in milliseconds.
+    long elapsedTimeSimulated = (long)(elapsedTimeReal * _speed * 1000);
 
     if (!_isInited)
     {
@@ -68,6 +71,18 @@ class TripPlayer
     return _newTrips;
   }
 
+  public void togglePause()
+  {
+    if (_isPlaying)
+    {
+      pause();
+    }
+    else
+    {
+      play();
+    }
+  }
+
   public void play()
   {
     _isPlaying = true;
@@ -89,12 +104,12 @@ class TripPlayer
     return _speed;
   }
 
-  public void setTripTime(long tripTime)
+  public void setTime(long time)
   {
-    _lastTripTime = tripTime;
+    _lastTripTime = time;
   }
 
-  public long getTripTime()
+  public long getTime()
   {
     return _lastTripTime;
   }
