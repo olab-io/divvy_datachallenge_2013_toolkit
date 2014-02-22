@@ -50,3 +50,5 @@ _Descriptions coming soon._
      - Explains the fields, etc.
  - [Divvy Station Distance Tables](https://github.com/tothebeat/pairwise-geo-distances/tree/master/bike_stations_data/Chicago)
      - Supplementary distance data.
+ - <http://chicagocrashes.org/>
+ - <https://bikesharingdata.hackpad.com/>
