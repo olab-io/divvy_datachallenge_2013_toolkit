@@ -1,12 +1,13 @@
-import java.util.Date;
-
 /// This class represents a Divvy Bike Trip taken by a single user.
 class Trip
 {
+  int _id; // Trip id;
   Date _startTime; // The trip start time.
   Date _stopTime;   // The trip stop time.
 
   long _duration; // The duration of the trip in milliseconds.
+
+  int _bikeId; // The bike id.
 
   Station _fromStation; // The start station id number.
   Station _toStation;   // The stop station id number.
@@ -21,21 +22,20 @@ class Trip
   int _birthYear;   // Year of birth.
   int _age;
 
-  Trip(Trip other)
-  {
-    
-  }
-
-  Trip(Date startTime, 
+  Trip(int id, 
+  Date startTime, 
   Date stopTime, 
+  int bikeId, 
   Station fromStation, 
   Station toStation, 
   String userType, 
   String gender, 
   int birthYear)
   {
+    _id = id;
     _startTime = startTime;
     _stopTime = stopTime;
+    _bikeId = bikeId;
     _fromStation = fromStation;
     _toStation = toStation;
     _userType = userType;
@@ -47,7 +47,6 @@ class Trip
     _bearing = _fromStation.getBearingTo(_toStation);
     _duration = _stopTime.getTime() - _startTime.getTime();
     _age = _birthYear != 0 ? _startTime.getYear() - _birthYear : 0;
-
   }
 
   // Accessors ////////////////////////////////////////////////////////////////
@@ -74,6 +73,11 @@ class Trip
   public Station getToStation()
   {
     return _toStation;
+  }
+
+  public int getBikeId()
+  {
+    return _bikeId;
   }
 
   public String getUserType()
@@ -107,5 +111,10 @@ class Trip
   {
     return _age;
   }
-}
 
+  // returns a clamped 0 - 1 for a trip
+  float getProgressAtTime(long time)
+  {
+    return constrain(norm(time, _startTime.getTime(), _stopTime.getTime()), 0, 1);
+  }
+}
