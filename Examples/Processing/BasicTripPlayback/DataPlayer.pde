@@ -1,6 +1,6 @@
 class DataPlayer
 {
-  float _speed = 10; // The speed of the player.  A speed of 1 will play the trips in "real time".
+  float _speed = 1000; // The speed of the player.  A speed of 1 will play the trips in "real time".
   boolean _isInited = false;
 
   boolean _isPlaying = true; // Are we currently playing.
@@ -20,7 +20,7 @@ class DataPlayer
   {
     // Clear out the trips.
     _newTrips.clear();
-    
+
     // Do we have any trips?  If not, skip this.
     // If we have trips, are we currently playing?  If not, skip this.
     if (!_isPlaying) return;
@@ -32,8 +32,7 @@ class DataPlayer
     long elapsedTimeReal = now - _lastUpdate; 
 
     // How much time has passed in our simulation?
-    // Multiply by 1000 because it is in milliseconds.
-    long elapsedTimeSimulated = (long)(elapsedTimeReal * _speed * 1000);
+    long elapsedTimeSimulated = (long)(elapsedTimeReal * _speed);
 
     if (!_isInited)
     {
@@ -57,6 +56,7 @@ class DataPlayer
     _newTrips = dataStore.getTripsByStartTime(_lastTripTime, newTripTime, _lastTripArrayIndex);
 
     _lastTripArrayIndex += _newTrips.size();
+
     _lastTripTime = newTripTime;
     _lastUpdate = now;
   }

@@ -48,14 +48,14 @@ HashMap<Integer, Station> stations = new HashMap<Integer, Station>();
 SimpleDateFormat localTimeFormat;
 ///< This is a time formatting object that displays times in CST.
 
-
 PFont font;
 ///< Our tiny font.
 
 /// The setup() method runs once and sets up our variables.
 void setup()
 {
-  size(1280, 720, P2D); // Create a 2D openGL window context.
+  size(1280, 720); // Create a 2D openGL window context.
+  smooth(); // Turn on anti-aliasing.
 
   frameRate(60); // Tell the sketch to run at 60 frames / second (if possible).
 
@@ -94,7 +94,8 @@ void draw()
   Iterator<Trip> iterator = activeTrips.iterator(); 
 
   int i = 0; // Keep a count that we'll use for the y position.
-  int h = 4; // This is the height of our little blob.
+
+  long playerTime = dataPlayer.getTime();
 
   // Iterate through each of the currently active trips.
   while (iterator.hasNext ())
@@ -103,7 +104,7 @@ void draw()
     Trip trip = iterator.next(); 
 
     // If the trip is finished, remove it from the activeTrips.
-    if (trip.getStopTime().getTime() < dataPlayer.getTime())
+    if (trip.getStopTime().getTime() < playerTime)
     {
       iterator.remove();
     }
@@ -111,11 +112,31 @@ void draw()
     {
       // If it is not finished, get its 0-1 progress and use 
       // that to draw a very small rectangle.
-      float amt = trip.getProgressAtTime(dataPlayer.getTime());
+      int h = 8; // This is the height of our little blob.
+      float amt = trip.getProgressAtTime(playerTime);
+      float x = width * amt;
+      float y = i * (h + 2);
+
+      ellipseMode(CENTER);
+
+      color strokeColor = color(255, 255, 0, 200);
+      color fillColor = color(255, 255, 0, 100);
+
+      if (trip.getUserType().equals("S"))
+      {      
+        strokeColor = color(255, 0, 0, 200);
+        fillColor = color(255, 0, 0, 100);
+      }
 
       noStroke();
+      fill(fillColor);
+      ellipse(x, y, h, h);
+      noFill();
+      stroke(strokeColor);
+      ellipse(x, y, h, h);
+
       fill(255, 200);
-      ellipse(width * amt, i * h + i * 2, h, h);
+      text(trip.getBikeId(), x + h, y + 3);
     }
     i++;
   }
@@ -140,6 +161,8 @@ void drawPlayBar()
 
   // We push a PStyle in order to isolate these styles from others.
   pushStyle();
+  rectMode(CORNER);
+
   noStroke(); // no strokes in here.
 
   // Draw the background color.
@@ -176,14 +199,18 @@ void keyPressed()
     dataPlayer.togglePause();
     break;
   case '=':
-    dataPlayer.setSpeed(dataPlayer.getSpeed() + 1);
+    dataPlayer.setSpeed(dataPlayer.getSpeed() + 100);
     break;
   case '-':
-    float currentSpeed = dataPlayer.getSpeed() - 1;
+    float currentSpeed = dataPlayer.getSpeed() - 100;
     // Don't allow negative speeds yet.
     if (currentSpeed > 0) 
     {
       dataPlayer.setSpeed(currentSpeed);
+    }
+    else 
+    {
+      dataPlayer.setSpeed(1);
     }
     break;
   }

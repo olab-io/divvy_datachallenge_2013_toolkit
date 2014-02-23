@@ -102,7 +102,7 @@ class Trip
   }
 
   // Return the trip duration in milliseconds
-  public float getDuration() 
+  public long getDuration() 
   {
     return _duration;
   }
@@ -115,6 +115,13 @@ class Trip
   // returns a clamped 0 - 1 for a trip
   float getProgressAtTime(long time)
   {
-    return constrain(norm(time, _startTime.getTime(), _stopTime.getTime()), 0, 1);
+    // In order to do math with long integers (the dates)
+    // We need to do our floating point math with double precision.
+    // Otherwise, there are significant rounding errors.
+    double elapsed  = (double)(time - _startTime.getTime());
+    double duration = (double)_duration;
+    double normalized = elapsed / duration;
+    return (float)normalized;
   }
 }
+
