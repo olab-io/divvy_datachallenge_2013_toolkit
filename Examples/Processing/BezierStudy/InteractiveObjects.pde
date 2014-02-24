@@ -68,8 +68,10 @@ public class BaseInteractiveObject extends PVector
 
   public void draw() 
   {
+    // The base object draws nothing.
   }
 
+  // Return the fill color based on the current object state.
   public int getFillColor()
   {
     if (_isDragging)
@@ -90,6 +92,7 @@ public class BaseInteractiveObject extends PVector
     }
   }
 
+  // Return the stroke color based on the current object state.
   public int getStrokeColor()
   {
     if (_isDragging)
@@ -110,6 +113,8 @@ public class BaseInteractiveObject extends PVector
     }
   }
 
+  // Check to see if the given position is inside the object.
+  // This must be overridden by child objects.
   public boolean hitTest(PVector position) 
   {
     // must override
@@ -135,12 +140,10 @@ public class BaseInteractiveObject extends PVector
 
   public void onMoveIn() 
   {
-    //    println("[" + _id + "]: " + "onMoveIn");
   }
 
   public void onMoveOut() 
   {
-    //    println("[" + _id + "]: " + "onMoveOut");
   }
 
   public void onDoubleClick() 
@@ -266,7 +269,6 @@ public class BaseInteractivePolygon extends BaseInteractiveObject
   public boolean hitTest(PVector position) 
   {
     int counter = 0;
-    int i;
     double xinters;
     PVector p1;
     PVector p2;
@@ -277,7 +279,7 @@ public class BaseInteractivePolygon extends BaseInteractiveObject
 
     p1 = _polyline.get(0);
 
-    for (i=1; i <=N; i++) 
+    for (int i = 1; i <= N; i++) 
     {
       p2 = _polyline.get(i % N);
 
@@ -302,6 +304,19 @@ public class BaseInteractivePolygon extends BaseInteractiveObject
       p1 = p2;
     }
     return (counter % 2) == 0;
+  }
+
+  public void draw()
+  {
+    beginShape();
+
+    for (int i = 0; i < _polyline.size(); i++)
+    {
+      PVector p = _polyline.get(i);
+      vertex(p.x, p.y, p.z);
+    }
+
+    endShape(CLOSE);
   }
 }
 
@@ -341,6 +356,7 @@ public class InteractiveObjectManager
     switch (event.getAction()) 
     {
     case MouseEvent.CLICK:
+      // Nothing to do here.
       break;
     case MouseEvent.DRAG:
 
@@ -436,7 +452,6 @@ public class InteractiveObjectManager
       // do something...
       break;
     case MouseEvent.PRESS:
-      println("clicking!");
       for (BaseInteractiveObject iObject : iObjects) 
       {
         iObject._isPressed = false; // reset
@@ -445,7 +460,6 @@ public class InteractiveObjectManager
         {
           if (iObject.hitTest(mouse)) 
           {
-            println("found one!");
             foundOne = true;
             iObject._isPressed = true; // reset
             iObject._isOver = true; // reset
@@ -464,11 +478,45 @@ public class InteractiveObjectManager
 
       break;
     default:
-      println("????" + event.getAction() );
+      println("Unknown action: " + event.getAction() );
     }
   }
   public void keyEvent(KeyEvent evt)
   {
+    switch(evt.getAction())
+    {
+    case KeyEvent.PRESS:
+      for (int i = 0; i < iObjects.size(); i++) 
+      {
+        if (i == 0) 
+        {
+          iObjects.get(i).keyPressedInside();
+        } 
+        else 
+        {
+          iObjects.get(i).keyPressedOutside();
+        }
+      }
+      break;
+    case KeyEvent.RELEASE:
+      for (int i = 0; i < iObjects.size(); i++) 
+      {
+        if (i == 0) 
+        {
+          iObjects.get(i).keyReleasedInside();
+        } 
+        else 
+        {
+          iObjects.get(i).keyReleasedOutside();
+        }
+      }
+      break;
+    case KeyEvent.TYPE:
+      // Not supported.
+      break;
+    default:
+      println("Unknown action: " + evt.getAction());
+    }
   }
 
   public void add(BaseInteractiveObject iObject) 
@@ -494,34 +542,5 @@ public class InteractiveObjectManager
   // public void onMoveIn() { }
   // public void onMouseOut() { }
 
-  public void keyPressed() 
-  {
-    for (int i = 0; i < iObjects.size(); i++) 
-    {
-      if (i == 0) 
-      {
-        iObjects.get(i).keyPressedInside();
-      } 
-      else 
-      {
-        iObjects.get(i).keyPressedOutside();
-      }
-    }
-  }
-
-  public void keyReleased() 
-  {
-    for (int i = 0; i < iObjects.size(); i++) 
-    {
-      if (i == 0) 
-      {
-        iObjects.get(i).keyReleasedInside();
-      } 
-      else 
-      {
-        iObjects.get(i).keyReleasedOutside();
-      }
-    }
-  }
 }
 
