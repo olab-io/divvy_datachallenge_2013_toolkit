@@ -12,6 +12,8 @@ This toolkit consists of a collection of examples, preprocessors and tools to su
 
 The goal of this toolkit is to provide a basic foundation for building data visualizations using the 2013 Divvy Bike data.
 
+__For questions, leave an issue here or join the conversation @ <https://talk.olab.io>.__
+
 ## Toolkit Components
 
 ### Raw Data
