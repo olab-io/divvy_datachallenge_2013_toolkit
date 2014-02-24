@@ -1,10 +1,12 @@
+// This class represents a Circle and can do some math
+// with those circles.   
 public class Circle extends PVector
 {
   float _radius;
 
   public Circle(PVector position, float radius)
   {
-    super(position.x, position.y, position.z);
+    super(position.x, position.y, position.z); // Call the PVector super constructor
     _radius = radius;
   }
 
@@ -58,7 +60,7 @@ public class Circle extends PVector
     // 'point 2' is the point where the line through the circle
     //  intersection points crosses the line between the circle
     //  centers.  
- 
+
     // Determine the distance from point 0 to point 2. 
     a = ((r0*r0) - (r1*r1) + (d*d)) / (2.0 * d) ;
 
@@ -79,7 +81,6 @@ public class Circle extends PVector
     intersections[1] = new PVector(x2 - rx, y2 - ry);
 
     return intersections;
-
   }
 }
 
