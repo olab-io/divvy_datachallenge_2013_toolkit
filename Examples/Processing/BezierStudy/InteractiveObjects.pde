@@ -24,10 +24,14 @@
 
 public class BaseInteractiveObject extends PVector
 {  
+  // Keep track of the state of this interactive object.
   boolean _isOver = false;
   boolean _isDragging = false;
   boolean _isPressed = false;
 
+  // Keep some colors in here to represent the basic states.
+  // Subclasses are not required to use these colors.
+  // color() is an alias for an integer color representation. 
   public int fillColor;
   public int strokeColor;
   public int overFillColor;
@@ -37,21 +41,29 @@ public class BaseInteractiveObject extends PVector
   public int pressedFillColor;
   public int pressedStrokeColor;
 
+  // Create the base interactive object.
   public BaseInteractiveObject(PVector position) 
   {    
-    x = position.x;
-    y = position.y;
-    z = position.z;
+    super(position.x, position.y, position.z);
 
-    overFillColor = color(255, 255, 0, 180);
-    draggingFillColor = color(255, 0, 255, 180);
-    pressedFillColor = color(0, 255, 0, 180);
-    fillColor = color(127, 180);
+    int alphaFill = 220;
+    int alphaStroke = 255;
 
-    overStrokeColor = color(255, 255, 0, 255);
-    draggingStrokeColor = color(255, 0, 255, 255);
-    pressedStrokeColor = color(0, 255, 0, 255);
-    strokeColor = color(127, 255);
+    // Grays
+    fillColor = color(221, 221, 221, alphaFill);
+    strokeColor = color(221, 221, 221, alphaStroke);
+
+    // Yellows
+    overFillColor = color(255, 220, 0, alphaFill);
+    overStrokeColor = color(255, 220, 0, alphaStroke);
+
+    // Greens
+    pressedFillColor = color(255, 133, 27, alphaFill);
+    pressedStrokeColor = color(255, 133, 27, alphaStroke);
+
+    // 
+    draggingFillColor = color(255, 65, 54, alphaFill);
+    draggingStrokeColor = color(255, 65, 54, alphaStroke);
   }
 
   public void draw() 

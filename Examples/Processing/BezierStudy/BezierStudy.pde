@@ -80,6 +80,8 @@ void draw()
     rotate(i / (float) numRays * TWO_PI); 
     translate(size + 2, 0);
     line(0, 0, size, 0);
+    translate(size + 5, 0);
+    ellipse(0, 0, 4, 4);
     popMatrix();
   }
 
