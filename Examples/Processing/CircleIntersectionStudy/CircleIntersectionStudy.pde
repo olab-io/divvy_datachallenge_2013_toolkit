@@ -44,7 +44,7 @@ void draw()
 
   b.x = mouseX;
   b.y = mouseY;
-  
+
   noFill();
   stroke(255);
 
@@ -63,8 +63,8 @@ void draw()
     ellipse(intersectionsAB[0].x, intersectionsAB[0].y, 20, 20);
     ellipse(intersectionsAB[1].x, intersectionsAB[1].y, 20, 20);
   }
-  
-    // Calculate our intersections.
+
+  // Calculate our intersections.
   PVector[] intersectionsBC = b.getIntersectionsWith(c);
 
   // If there are any intersections, then draw them.
@@ -74,6 +74,5 @@ void draw()
     ellipse(intersectionsBC[0].x, intersectionsBC[0].y, 20, 20);
     ellipse(intersectionsBC[1].x, intersectionsBC[1].y, 20, 20);
   }
-
 }
 
