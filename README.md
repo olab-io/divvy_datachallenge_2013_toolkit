@@ -1,6 +1,7 @@
 # Divvy Data Challenge 2013 Toolkit
 
 ## Updates
+
  - 21 Feb, 2014: Updated everything for revised Divvy Data. 
  - 16 Feb, 2014: Initial Upload.
 
@@ -42,12 +43,16 @@ To get all trips taken by 33 year old females:
 
 See the [README.md](https://github.com/olab-io/divvy_datachallenge_2013_toolkit/blob/master/api/README.md) for DIY API installation instructions and query parameter documentation.
 
+An alternate API by @amonks is <http://divvy-json.herokuapp.com/>.
+
 ### Examples
     
 _Descriptions coming soon.  See code comments for the moment._
 
 ## Related
 
+ - [Divvy API](http://divvy-json.herokuapp.com/)
+     - Annotated API by @amonks
  - [Divvy Data Document](http://j.mp/DivvyData)
      - Explains the fields, etc.
  - [Divvy Station Distance Tables](https://github.com/tothebeat/pairwise-geo-distances/tree/master/bike_stations_data/Chicago)
