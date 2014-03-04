@@ -116,3 +116,14 @@ Static stations are represented in the `stations.json` data.  The `stations.json
 [^2]: Both `age` and `birth_year` select on the same `birth_year` column of the database.  Since it's easier to think in terms of age, when both `age` and `birth_year` parameters are included, all `birth_year` parameters will be ignored in favor of the `age` parameter.  Like `trip_id`, the corresponding range-based versions of the `age` and `birth_year` parameters will be used.
 
 [^3]: Since this is a massive data set, it is not advisable to let a user return huge quantities of data with a single query.  Instead, the trip results are broken down into pages of results.  `rpp` is set to 100 by default and is also the default maximum.  The `page` parameter determines which trip id to begin with.  For instance, to return results starting with the 200th trip, one might pass `rpp=100` and `page=1`. 
+
+
+### MySQL Tricks
+
+Create a table that includes duration:
+
+```
+CREATE VIEW Divvy_Trips_2013_With_Duration AS
+SELECT *, (UNIX_TIMESTAMP(stop_time) - UNIX_TIMESTAMP(start_time)) AS duration 
+FROM `Divvy_Trips_2013`
+```
